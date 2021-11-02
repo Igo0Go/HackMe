@@ -192,72 +192,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e41ef13bbd7f9f4f90e7bc3b64c748c, type: 3}
---- !u!1 &447895023 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7361701870949347160, guid: 6886be7a102786644a33f6c62cd7ff2c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1438996018588451753}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &447895024
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 447895023}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.27
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.45, z: 0}
---- !u!114 &447895025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 447895023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5629c506a1be8d4197bbdfad0b7d87d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2
---- !u!54 &447895027
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 447895023}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
---- !u!114 &447895028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 447895023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa89ecb3ba7ab4b47b8999c29876e229, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputMoveOriginTransform: {fileID: 963194228}
-  viewCamera: {fileID: 963194227}
-  moveClickMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &447895029 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3623408908088514138, guid: 6886be7a102786644a33f6c62cd7ff2c,
@@ -1096,6 +1030,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 447895028, guid: 6886be7a102786644a33f6c62cd7ff2c, type: 3}
+      propertyPath: viewCamera
+      value: 
+      objectReference: {fileID: 963194227}
+    - target: {fileID: 447895028, guid: 6886be7a102786644a33f6c62cd7ff2c, type: 3}
+      propertyPath: inputMoveOriginTransform
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 3623408908088514138, guid: 6886be7a102786644a33f6c62cd7ff2c,
         type: 3}
       propertyPath: m_RootOrder
@@ -1155,11 +1097,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character
-      objectReference: {fileID: 0}
-    - target: {fileID: 7361701870949347160, guid: 6886be7a102786644a33f6c62cd7ff2c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6886be7a102786644a33f6c62cd7ff2c, type: 3}
