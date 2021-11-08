@@ -11,6 +11,9 @@ public class CharacterMove : MonoBehaviour
     private Rigidbody rb;
     private Transform myTransform;
 
+    public static bool Blocked { get; set; }
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -27,8 +30,11 @@ public class CharacterMove : MonoBehaviour
     /// <param name="direction">Единичный вектор - направление</param>
     public void MoveByVectorWithSpeed(Vector3 direction)
     {
-        Vector3 newPosition = myTransform.position + direction * speed * Time.deltaTime;
-        rb.MovePosition(newPosition);
-        myTransform.forward = direction;
+        if(!Blocked)
+        {
+            Vector3 newPosition = myTransform.position + direction * speed * Time.deltaTime;
+            rb.MovePosition(newPosition);
+            myTransform.forward = direction;
+        }
     }
 }

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - NavMeshGround
+  - Interaction
   layers:
   - Default
   - TransparentFX
