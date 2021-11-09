@@ -5,43 +5,43 @@ using System;
 
 public class ColorSecuritySystem : MonoBehaviour
 {
-    public static Action<string> stateSavedEvent;
+    public Action<string> stateSavedEvent;
 
-    private static List<int[]> savedStates = new List<int[]>();
+    [SerializeField, Range(0,6)] private int threshold = 0;
 
-    public static void AddState(int[] state)
+    private List<int[]> savedStates = new List<int[]>();
+
+    public void AddState(int[] state)
     {
         if(!IsSavedState(state))
         {
-            Debug.Log(string.Format("|b|h|la|ra|ll|rl|"));
-            string result = "|";
             int[] item = new int[6];
 
             for (int i = 0; i < state.Length; i++)
             {
-                result += state[i] + "|";
                 item[i] = state[i];
             }
-            Debug.Log(result);
             savedStates.Add(item);
             stateSavedEvent?.Invoke("Состояние сохранено");
         }
     }
 
-    public static string CheckState(int[] state)
+    public bool ContaisState(int[] state, out string message)
     {
-        if(IsSavedState(state))
+        if (IsNearState(state))
         {
-            return "Отслеживается";
+            message = "Отслеживается";
+            return true;
         }
-        return "Не отслеживается";
+        message = "Не отслеживается";
+        return false;
     }
 
-    private static bool IsSavedState(int[] state)
+    private bool IsSavedState(int[] state)
     {
         for (int i = 0; i < savedStates.Count; i++)
         {
-            if(CompareStates(savedStates[i], state))
+            if(CompareStates(savedStates[i], state, 0))
             {
                 return true;
             }
@@ -49,15 +49,34 @@ public class ColorSecuritySystem : MonoBehaviour
         return false;
     }
 
-    private static bool CompareStates(int[] leftstate, int[] rightState)
+    private bool IsNearState(int[] state)
     {
+        for (int i = 0; i < savedStates.Count; i++)
+        {
+            if (CompareStates(savedStates[i], state, threshold))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool CompareStates(int[] leftstate, int[] rightState, int threshold)
+    {
+        int currentThreshold = 0;
         for (int i = 0; i < leftstate.Length; i++)
         {
             if(leftstate[i] != rightState[i])
             {
-                return false;
+                currentThreshold++;
             }
         }
-        return true;
+
+        if (currentThreshold <= threshold)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

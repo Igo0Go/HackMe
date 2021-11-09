@@ -6,13 +6,13 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterInteractionReactor : MonoBehaviour
 {
-    public static Action SaveStateEvent;
+    public Action saveStateEvent;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Interaction"))
         {
-            SaveStateEvent?.Invoke();
+            saveStateEvent?.Invoke();
         }
     }
 }

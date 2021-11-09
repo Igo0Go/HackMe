@@ -2,40 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ColorChangerMenu : MonoBehaviour
 {
-    public GameObject pausePanel;
-
+    [SerializeField] private GameObject pausePanel;
     [SerializeField] List<PartInfo> parts;
     [SerializeField] List<Color> colors;
     [SerializeField] private Text stateText;
     [SerializeField] private Text messagetext;
-        [SerializeField] private int[] currentState = new int[6];
+    [SerializeField] private GameObject finalPanel;
+    [SerializeField] private int[] currentState = new int[6];
 
-
+    private ColorSecuritySystem colorSecuritySystem;
     private int currentPartIndex;
-
-    public void SetPart(int part) => currentPartIndex = part;
-
-    public void SetColorForPart(int colorIndex)
-    {
-        parts[currentPartIndex].SetColor(colors[colorIndex]);
-        currentState[currentPartIndex] = colorIndex;
-        CheckState();
-    }
 
     private void Awake()
     {
+        CharacterInteractionReactor characterInteractionReactor = FindObjectOfType<CharacterInteractionReactor>();
+        colorSecuritySystem = FindObjectOfType<ColorSecuritySystem>();
         messagetext.CrossFadeAlpha(0, 0, true);
-        CharacterInteractionReactor.SaveStateEvent += AddState;
-        CharacterInteractionReactor.SaveStateEvent += CheckState;
-        ColorSecuritySystem.stateSavedEvent += ShowMessage; ;
+        characterInteractionReactor.saveStateEvent += AddState;
+        colorSecuritySystem.stateSavedEvent += ShowMessage;
         for (int i = 0; i < currentState.Length; i++)
         {
             SetPart(i);
             SetColorForPart(0);
         }
+    }
+
+    private void Start()
+    {
+        pausePanel.SetActive(false);
+        finalPanel.SetActive(false);
     }
 
     private void Update()
@@ -47,17 +46,51 @@ public class ColorChangerMenu : MonoBehaviour
         }
     }
 
-    private void AddState() => ColorSecuritySystem.AddState(currentState);
+    public void SetPart(int part) => currentPartIndex = part;
 
-    private void CheckState() => stateText.text = ColorSecuritySystem.CheckState(currentState);
+    public void SetColorForPart(int colorIndex)
+    {
+        parts[currentPartIndex].SetColor(colors[colorIndex]);
+        currentState[currentPartIndex] = colorIndex;
+        CheckState(false);
+    }
 
-    public void ShowMessage(string messageText)
+    public void Restart()
+    {
+        finalPanel.SetActive(false);
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    private void AddState()
+    {
+        CheckState(true);
+        colorSecuritySystem.AddState(currentState);
+        stateText.text = "Отслеживается";
+    }
+    private void CheckState(bool withFinal)
+    {
+        if(colorSecuritySystem.ContaisState(currentState, out string message))
+        {
+            if(withFinal)
+            {
+                Time.timeScale = 0;
+                finalPanel.SetActive(true);
+                return;
+            }
+        }
+        stateText.text = message;
+    }
+    private void ShowMessage(string messageText)
     {
         messagetext.text = messageText;
         StopAllCoroutines();
         StartCoroutine(ShowMessageCoroutine());
     }
-
     private IEnumerator ShowMessageCoroutine()
     {
         messagetext.CrossFadeAlpha(1, 1, true);
