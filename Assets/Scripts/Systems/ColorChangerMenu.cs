@@ -14,7 +14,9 @@ public class ColorChangerMenu : MonoBehaviour
     [SerializeField] private GameObject finalPanel;
     [SerializeField] private int[] currentState = new int[6];
 
+    private SuitSystem currentSuitSystemPoint;
     private ColorSecuritySystem colorSecuritySystem;
+    private SuitSystem currentSuitPoint;
     private int currentPartIndex;
 
     private void Awake()
@@ -23,6 +25,7 @@ public class ColorChangerMenu : MonoBehaviour
         colorSecuritySystem = FindObjectOfType<ColorSecuritySystem>();
         messagetext.CrossFadeAlpha(0, 0, true);
         characterInteractionReactor.saveStateEvent += AddState;
+        characterInteractionReactor.suitSystemPointUsed += OnSuitPointUsed;
         colorSecuritySystem.stateSavedEvent += ShowMessage;
         for (int i = 0; i < currentState.Length; i++)
         {
@@ -30,20 +33,18 @@ public class ColorChangerMenu : MonoBehaviour
             SetColorForPart(0);
         }
     }
-
     private void Start()
     {
         pausePanel.SetActive(false);
         finalPanel.SetActive(false);
     }
 
-    private void Update()
+    public void CloseSuitMenu()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            pausePanel.SetActive(!pausePanel.activeSelf);
-            CharacterMove.Blocked = pausePanel.activeSelf;
-        }
+        currentSuitPoint.openColorMenuEvent -= OpenMenu;
+        currentSuitPoint.CloseSystem();
+        currentSuitPoint = null;
+        pausePanel.SetActive(false);
     }
 
     public void SetPart(int part) => currentPartIndex = part;
@@ -96,6 +97,15 @@ public class ColorChangerMenu : MonoBehaviour
         messagetext.CrossFadeAlpha(1, 1, true);
         yield return new WaitForSeconds(5);
         messagetext.CrossFadeAlpha(0, 1, true);
+    }
+    private void OnSuitPointUsed(SuitSystem suitSystemPoint)
+    {
+        currentSuitPoint = suitSystemPoint;
+        currentSuitPoint.openColorMenuEvent += OpenMenu;
+    }
+    private void OpenMenu()
+    {
+        pausePanel.SetActive(true);
     }
 }
 

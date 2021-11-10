@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NavMeshGround
   - Interaction
+  - SuitPoint
   layers:
   - Default
   - TransparentFX
