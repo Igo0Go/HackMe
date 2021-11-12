@@ -23,6 +23,7 @@ public class ColorChangerMenu : MonoBehaviour
     {
         CharacterInteractionReactor characterInteractionReactor = FindObjectOfType<CharacterInteractionReactor>();
         colorSecuritySystem = FindObjectOfType<ColorSecuritySystem>();
+        colorSecuritySystem.SetUp();
         messagetext.CrossFadeAlpha(0, 0, true);
         characterInteractionReactor.saveStateEvent += AddState;
         characterInteractionReactor.suitSystemPointUsed += OnSuitPointUsed;
@@ -75,7 +76,7 @@ public class ColorChangerMenu : MonoBehaviour
     }
     private void CheckState(bool withFinal)
     {
-        if(colorSecuritySystem.ContaisState(currentState, out string message))
+        if(colorSecuritySystem.IsAlienClass(currentState, out string message))
         {
             if(withFinal)
             {
